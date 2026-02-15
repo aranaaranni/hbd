@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생일축하 이벤트</title>
+
+<style>
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+button { -webkit-appearance: none; appearance: none; font: inherit; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image:
+    linear-gradient(rgba(255,182,193,0.4), rgba(255,105,180,0.4)),
+    url("01.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  font-family: "Noto Sans KR", sans-serif;
+  overflow: hidden;
+  transition: background-image 0.6s ease;
+  padding: 24px;
+}
+
+.card {
+  background: rgba(255,240,245,0.95);
+  padding: 32px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(255,105,180,0.3);
+  max-width: 420px;
+  width: 100%;
+  border: 2px solid #ffc0cb;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+  color: #d63384;
+}
+
+.btn-container {
+  position: relative;
+  width: 280px;
+  height: 56px;
+  margin: 0 auto;
+}
+
+.btn {
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 48px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.btn:active { transform: scale(0.95); }
+
+.yes {
+  left: 0;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  color: white;
+  box-shadow: 0 5px 15px rgba(255,20,147,0.4);
+}
+
+.no {
+  left: 160px;
+  background: #ffd6e8;
+  color: #c2185b;
+}
+
+.result {
+  margin-top: 18px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff1493;
+  display: none;
+}
+
+/* 🎆 폭죽 파티클 */
+.particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>
+    눌러볼래 말래?<br>
+    일단 조은거야 💕
+  </h1>
+
+  <div class="btn-container" id="btnArea">
+    <button class="btn yes" id="yesBtn" type="button">Yes 💗</button>
+    <button class="btn no" id="noBtn" type="button">No 🙈</button>
+  </div>
+
+  <div class="result" id="result">
+    💖 혜리미 생일츄카해 💖
+  </div>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const btnArea = document.getElementById("btnArea");
+const result = document.getElementById("result");
+
+yesBtn.addEventListener("click", () => {
+
+  document.body.style.backgroundImage =
+    'linear-gradient(rgba(255,182,193,0.4), rgba(255,20,147,0.4)), url("02.jpg")';
+
+  result.style.display = "block";
+  createFireworks(window.innerWidth / 2, window.innerHeight / 2);
+});
+
+function createFireworks(x, y) {
+  const colors = ["#ff69b4", "#ff1493", "#ffc0cb", "#ff85c1"];
+
+  for (let i = 0; i < 60; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 200;
+
+    const dx = Math.cos(angle) * distance + "px";
+    const dy = Math.sin(angle) * distance + "px";
+
+    particle.style.setProperty("--x", dx);
+    particle.style.setProperty("--y", dy);
+
+    particle.style.left = x + "px";
+    particle.style.top = y + "px";
+
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+  }
+}
+
+function moveNo() {
+  const w = 120;
+  const h = 48;
+
+  const maxX = btnArea.clientWidth - w;
+  const maxY = btnArea.clientHeight - h;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  moveNo();
+});
+</script>
+
+</body>
+</html>
